@@ -1,3 +1,19 @@
+class State (object) :
+    def __init__(self):
+
+        board = [   [0,0,0,0,0,0,0,0],
+                    [0,0,0,0,0,0,0,0],
+                    [0,0,0,0,0,0,0,0],
+                    [0,0,0,0,0,0,0,0],
+                    [0,0,0,0,0,0,0,0],
+                    [0,0,0,0,0,0,0,0],
+                    [0,0,0,0,0,0,0,0],
+                    [0,0,0,0,0,0,0,0],
+                    ]
+        moves = []
+        to_move = 1
+        utility = 0
+
 class ReversiGame:
     """A game is similar to a problem, but it has a utility for each
     state and a terminal test instead of a path cost and a goal
@@ -7,8 +23,20 @@ class ReversiGame:
     methods. You will also need to set the .initial attribute to the
     initial state; this can be done in the constructor."""
 
+
+    initial_board = [   [0,0,0,0,0,0,0,0],
+                        [0,0,0,0,0,0,0,0],
+                        [0,0,0,0,0,0,0,0],
+                        [0,0,0,1,-1,0,0,0],
+                        [0,0,0,-1,1,0,0,0],
+                        [0,0,0,0,0,0,0,0],
+                        [0,0,0,0,0,0,0,0],
+                        [0,0,0,0,0,0,0,0],
+                        ]
+
     def legal_moves(self, state):
         "Return a list of the allowable moves at this point."
+
         abstract
 
     def make_move(self, move, state):
