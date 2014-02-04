@@ -34,6 +34,44 @@ class State (object) :
     def __repr__(self):
         "print out an ascii version of the board"
         "TODO"
+        """
+            | a | b | c | d | e | f | g | h |
+            ---------------------------------
+          1 | . | . | . | . | . | . | . | . |
+            ---------------------------------
+          2 | . | . | . | . | . | . | . | . |
+            ---------------------------------
+          3 | . | . | . | . | . | . | . | . |
+            ---------------------------------
+          4 | . | . | . | . | . | . | . | . |
+            ---------------------------------
+          5 | . | . | . | . | . | . | . | . |
+            ---------------------------------
+          6 | . | . | . | . | . | . | . | . |
+            ---------------------------------
+          7 | . | . | . | . | . | . | . | . |
+            ---------------------------------
+          8 | . | . | . | . | . | . | . | . |
+            ---------------------------------
+        """  
+        retval = ''
+        rowstr = ''
+        pieces = {-1:'O', 0:' ', 1:'X'}
+        sep = '   ---------------------------------\n'
+        
+        
+        retval +='   | a | b | c | d | e | f | g | h |\n'
+        retval += sep
+        
+        for i in range(0,8):
+            rowstr = ' '+str(i+1)+ ' |'
+            for j in range(0,8):
+                rowstr += ' '+pieces[self.board[i][j]]+' |'
+
+            retval += rowstr + '\n'
+            retval += sep 
+
+        return retval
 
 class ReversiGame(Game):
     """A game is similar to a problem, but it has a utility for each
@@ -84,7 +122,7 @@ class ReversiGame(Game):
         denominator = 0
         # naive utility: count number of pieces for each player
         # and return a fraction
-        # TODO: add strategies like preferring stabile positions
+        # TODO: add strategies like preferring stable positions
         for i in range(0,8):
             for j in range(0,8):
                 if state.board[i][j] == player: numerator += 1
