@@ -1,39 +1,79 @@
+<<<<<<< HEAD
 from copy import deepcopy
+
+
+=======
+from games import *
+
+# 
+# Properties:
+# board -   a list of list containing the board state
+# moves -   a list of (row,col) pairs giving legal moves for to_move
+#           player on the current board
+# utility-  a number giving the utility of the current board for 
+#           the current player
 class State (object) :
-    board = [   [0,0,0,0,0,0,0,0],
-                [0,0,0,0,0,0,0,0],
-                [0,0,0,0,0,0,0,0],
-                [0,0,0,0,0,0,0,0],
-                [0,0,0,0,0,0,0,0],
-                [0,0,0,0,0,0,0,0],
-                [0,0,0,0,0,0,0,0],
-                [0,0,0,0,0,0,0,0],
-            ]
-    moves = []
-    to_move = 0
-    utility = 0
-
-    def __init__(self,player):
-
-        self.board = [  [0,0,0,0,0,0,0,0],
-                        [0,0,0,0,0,0,0,0],
-                        [0,0,0,0,0,0,0,0],
-                        [0,0,0,1,-1,0,0,0],
-                        [0,0,0,-1,1,0,0,0],
-                        [0,0,0,0,0,0,0,0],
-                        [0,0,0,0,0,0,0,0],
-                        [0,0,0,0,0,0,0,0],
+    def __init__(self):
+        self.board = [   [0,0,0,0,0,0,0,0],
+                    [0,0,0,0,0,0,0,0],
+                    [0,0,0,0,0,0,0,0],
+                    [0,0,0,0,0,0,0,0],
+                    [0,0,0,0,0,0,0,0],
+                    [0,0,0,0,0,0,0,0],
+                    [0,0,0,0,0,0,0,0],
+                    [0,0,0,0,0,0,0,0],
                     ]
         self.moves = []
-        self.to_move = player
+        self.to_move = 1     # the player to move
         self.utility = 0
+
+    def __repr__(self):
+        "print out an ascii version of the board"
+        "TODO"
+        """
+            | a | b | c | d | e | f | g | h |
+            ---------------------------------
+          1 | . | . | . | . | . | . | . | . |
+            ---------------------------------
+          2 | . | . | . | . | . | . | . | . |
+            ---------------------------------
+          3 | . | . | . | . | . | . | . | . |
+            ---------------------------------
+          4 | . | . | . | . | . | . | . | . |
+            ---------------------------------
+          5 | . | . | . | . | . | . | . | . |
+            ---------------------------------
+          6 | . | . | . | . | . | . | . | . |
+            ---------------------------------
+          7 | . | . | . | . | . | . | . | . |
+            ---------------------------------
+          8 | . | . | . | . | . | . | . | . |
+            ---------------------------------
+        """  
+        retval = ''
+        rowstr = ''
+        pieces = {-1:'O', 0:' ', 1:'X'}
+        sep = '   ---------------------------------\n'
+        
+        
+        retval +='   | a | b | c | d | e | f | g | h |\n'
+        retval += sep
+        
+        for i in range(0,8):
+            rowstr = ' '+str(i+1)+ ' |'
+            for j in range(0,8):
+                rowstr += ' '+pieces[self.board[i][j]]+' |'
+
+            retval += rowstr + '\n'
+            retval += sep 
+
+        return retval
 
     def copy_board(self,board):
 
         self.board = deepcopy(board)
 
-
-class ReversiGame:
+class ReversiGame(Game):
     """A game is similar to a problem, but it has a utility for each
     state and a terminal test instead of a path cost and a goal
     test. To create a game, subclass this class and implement
@@ -41,7 +81,9 @@ class ReversiGame:
     override display and successors or you can inherit their default
     methods. You will also need to set the .initial attribute to the
     initial state; this can be done in the constructor."""
+    
 
+<<<<<<< HEAD
     
     def check_direction(self, position, state):
         "Check if there are valid_directions, if so,return all valid_directions."
@@ -113,11 +155,43 @@ class ReversiGame:
         #next_state.to_move = -state.to_move
         return next_state
 
+=======
+
+    def __init__(self):
+        self.initial_board = [   [0,0,0,0,0,0,0,0],
+                        [0,0,0,0,0,0,0,0],
+                        [0,0,0,0,0,0,0,0],
+                        [0,0,0,1,-1,0,0,0],
+                        [0,0,0,-1,1,0,0,0],
+                        [0,0,0,0,0,0,0,0],
+                        [0,0,0,0,0,0,0,0],
+                        [0,0,0,0,0,0,0,0],
+                    ]
+        self.gamestate = State()
+        self.gamestate.board = self.initial_board
+        self.initial = self.gamestate
+
+    
+
+    
+        
+>>>>>>> 8e665b6cb2037e47eecef1936f3567c38dd2fec7
 
             
     def utility(self, state, player):
         "Return the value of this final state to player."
-        abstract
+        # abstract
+        numerator = 0
+        denominator = 0
+        # naive utility: count number of pieces for each player
+        # and return a fraction
+        # TODO: add strategies like preferring stable positions
+        for i in range(0,8):
+            for j in range(0,8):
+                if state.board[i][j] == player: numerator += 1
+                elif state.board[i][j] == -player: denominator += 1
+
+        return numerator/denominator
 
     def terminal_test(self, state):
         "Return True if this is a final state for the game."

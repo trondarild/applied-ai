@@ -1,4 +1,4 @@
 Until next meeting: Wednesday 6.2.2014 at 12:15 at E building
 1. Michael: work on legal_moves
-2. Trond: work on uility function and display function
+2. Trond: work on utility function and display function
 
