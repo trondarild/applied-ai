@@ -1,8 +1,6 @@
-<<<<<<< HEAD
+
 from copy import deepcopy
 
-
-=======
 from games import *
 
 # 
@@ -82,9 +80,6 @@ class ReversiGame(Game):
     methods. You will also need to set the .initial attribute to the
     initial state; this can be done in the constructor."""
     
-
-<<<<<<< HEAD
-    
     def check_direction(self, position, state):
         "Check if there are valid_directions, if so,return all valid_directions."
         valid_directions = []
@@ -155,8 +150,6 @@ class ReversiGame(Game):
         #next_state.to_move = -state.to_move
         return next_state
 
-=======
-
     def __init__(self):
         self.initial_board = [   [0,0,0,0,0,0,0,0],
                         [0,0,0,0,0,0,0,0],
@@ -170,12 +163,6 @@ class ReversiGame(Game):
         self.gamestate = State()
         self.gamestate.board = self.initial_board
         self.initial = self.gamestate
-
-    
-
-    
-        
->>>>>>> 8e665b6cb2037e47eecef1936f3567c38dd2fec7
 
             
     def utility(self, state, player):
