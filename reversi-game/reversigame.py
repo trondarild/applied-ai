@@ -9,7 +9,6 @@ from games import *
 #           the current player
 class State (object) :
     def __init__(self):
-
         self.board = [   [0,0,0,0,0,0,0,0],
                     [0,0,0,0,0,0,0,0],
                     [0,0,0,0,0,0,0,0],
@@ -19,9 +18,22 @@ class State (object) :
                     [0,0,0,0,0,0,0,0],
                     [0,0,0,0,0,0,0,0],
                     ]
+
         self.moves = []
         self.to_move = 1     # the player to move
         self.utility = 0
+
+
+    def clone_board(self):
+        "produces a clone of the state's board"
+        retval = [[],[],[],[],[],[],[],[]]
+        for i in range(0,8):
+            for j in range(0,8):
+                retval[i][j] = self.board[i][j]
+
+    def __repr__(self):
+        "print out an ascii version of the board"
+        "TODO"
 
 class ReversiGame(Game):
     """A game is similar to a problem, but it has a utility for each
@@ -55,8 +67,15 @@ class ReversiGame(Game):
     def make_move(self, move, state):
         "Return the state that results from making a move from a state."
         # todo: with given move, do reversals etc and return the new state,
-        #       remember to switch to_move
-        abstract
+        #       remember to switch player in to_move
+        # note: should the directions for this move also be given?
+        #       This method has overlap with legal_moves: finding directions, and iterating
+        #       until find own piece
+
+        # work on cloned board so don't destroy the state
+        clonedboard = state.clone_board()
+        
+
             
     def utility(self, state, player):
         "Return the value of this final state to player."
