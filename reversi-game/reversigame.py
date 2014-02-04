@@ -68,7 +68,6 @@ class State (object) :
         return retval
 
     def copy_board(self,board):
-
         self.board = deepcopy(board)
 
 class ReversiGame(Game):

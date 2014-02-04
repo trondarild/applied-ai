@@ -135,6 +135,9 @@ def play_game(game, *players):
         for player in players:
             move = player(game, state)
             state = game.make_move(move, state)
+            # display game after human player, so computer to move
+            # todo, add legal moves?
+            if state.to_move == -1: game.display(state)
             if game.terminal_test(state):
                 return game.utility(state, players[0])
 
