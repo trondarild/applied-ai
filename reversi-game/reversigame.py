@@ -1,3 +1,4 @@
+from copy import deepcopy
 class State (object) :
     board = [   [0,0,0,0,0,0,0,0],
                 [0,0,0,0,0,0,0,0],
@@ -26,6 +27,11 @@ class State (object) :
         self.moves = []
         self.to_move = player
         self.utility = 0
+
+    def copy_board(self,board):
+
+        self.board = deepcopy(board)
+
 
 class ReversiGame:
     """A game is similar to a problem, but it has a utility for each
@@ -57,8 +63,8 @@ class ReversiGame:
 
     def legal_moves(self, state):
         "Return a list of the allowable moves at this point."
-
         # iterate 64 positions over board
+        state.moves = []
         for i in range(7):
             for j in range(7):
                 if state.board[j][i] == 0:
@@ -83,7 +89,31 @@ class ReversiGame:
 
     def make_move(self, move, state):
         "Return the state that results from making a move from a state."
-        abstract
+        next_state = State(-state.to_move)
+        next_state.copy_board(state.board)
+        next_state.board[move[1]][move[0]] = state.to_move
+        valid_directions = self.check_direction(move,state)
+        if valid_directions:
+            for direction in valid_directions:
+                x = move[0] + direction[0]
+                y = move[1] + direction[1]
+                ls = []
+                while x>=0 and x<=7 and y>=0 and y<=7:
+                    if state.board[y][x] == state.to_move:
+                        for (x,y) in ls:
+                            next_state.board[y][x] = state.to_move
+                        break
+                    elif state.board[y][x] == -state.to_move:
+                        ls.append((x,y))
+                    else: # if blank
+                        break
+                    x += direction[0]
+                    y += direction[1]
+        next_state.moves = []
+        #next_state.to_move = -state.to_move
+        return next_state
+
+
             
     def utility(self, state, player):
         "Return the value of this final state to player."
