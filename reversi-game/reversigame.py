@@ -126,7 +126,7 @@ class ReversiGame(Game):
 
     def make_move(self, move, state):
         "Return the state that results from making a move from a state."
-        next_state = State(-state.to_move)
+        next_state = State()
         next_state.copy_board(state.board)
         next_state.board[move[1]][move[0]] = state.to_move
         valid_directions = self.check_direction(move,state)
@@ -147,7 +147,7 @@ class ReversiGame(Game):
                     x += direction[0]
                     y += direction[1]
         next_state.moves = []
-        #next_state.to_move = -state.to_move
+        next_state.to_move = -state.to_move
         return next_state
 
     def __init__(self):
