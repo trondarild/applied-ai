@@ -1,7 +1,16 @@
+from games import *
+
+# 
+# Properties:
+# board -   a list of list containing the board state
+# moves -   a list of (row,col) pairs giving legal moves for to_move
+#           player on the current board
+# utility-  a number giving the utility of the current board for 
+#           the current player
 class State (object) :
     def __init__(self):
 
-        board = [   [0,0,0,0,0,0,0,0],
+        self.board = [   [0,0,0,0,0,0,0,0],
                     [0,0,0,0,0,0,0,0],
                     [0,0,0,0,0,0,0,0],
                     [0,0,0,0,0,0,0,0],
@@ -10,11 +19,11 @@ class State (object) :
                     [0,0,0,0,0,0,0,0],
                     [0,0,0,0,0,0,0,0],
                     ]
-        moves = []
-        to_move = 1
-        utility = 0
+        self.moves = []
+        self.to_move = 1     # the player to move
+        self.utility = 0
 
-class ReversiGame:
+class ReversiGame(Game):
     """A game is similar to a problem, but it has a utility for each
     state and a terminal test instead of a path cost and a goal
     test. To create a game, subclass this class and implement
@@ -22,9 +31,11 @@ class ReversiGame:
     override display and successors or you can inherit their default
     methods. You will also need to set the .initial attribute to the
     initial state; this can be done in the constructor."""
+    
 
 
-    initial_board = [   [0,0,0,0,0,0,0,0],
+    def __init__(self):
+        self.initial_board = [   [0,0,0,0,0,0,0,0],
                         [0,0,0,0,0,0,0,0],
                         [0,0,0,0,0,0,0,0],
                         [0,0,0,1,-1,0,0,0],
@@ -32,20 +43,35 @@ class ReversiGame:
                         [0,0,0,0,0,0,0,0],
                         [0,0,0,0,0,0,0,0],
                         [0,0,0,0,0,0,0,0],
-                        ]
+                    ]
+        self.gamestate = State()
+        self.gamestate.board = self.initial_board
+        self.initial = self.gamestate
 
     def legal_moves(self, state):
         "Return a list of the allowable moves at this point."
-
         abstract
 
     def make_move(self, move, state):
         "Return the state that results from making a move from a state."
+        # todo: with given move, do reversals etc and return the new state,
+        #       remember to switch to_move
         abstract
             
     def utility(self, state, player):
         "Return the value of this final state to player."
-        abstract
+        # abstract
+        numerator = 0
+        denominator = 0
+        # naive utility: count number of pieces for each player
+        # and return a fraction
+        # TODO: add strategies like preferring stabile positions
+        for i in range(0,8):
+            for j in range(0,8):
+                if state.board[i][j] == player: numerator += 1
+                elif state.board[i][j] == -player: denominator += 1
+
+        return numerator/denominator
 
     def terminal_test(self, state):
         "Return True if this is a final state for the game."
