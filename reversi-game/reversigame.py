@@ -60,7 +60,11 @@ class State (object) :
         for i in range(0,8):
             rowstr = ' '+str(i+1)+ ' |'
             for j in range(0,8):
-                rowstr += ' '+pieces[self.board[i][j]]+' |'
+                # display suggested moves
+                if (j,i) in self.moves:
+                    rowstr += ' '+'*'+' |'
+                else:
+                    rowstr += ' '+pieces[self.board[i][j]]+' |'
 
             retval += rowstr + '\n'
             retval += sep 
