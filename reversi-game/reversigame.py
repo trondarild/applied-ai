@@ -163,6 +163,7 @@ class ReversiGame(Game):
         next_state.to_move = -state.to_move
         return next_state
 
+    '''
     def make_move_new(self, move, state):
         # recursive version
         next_state = State()
@@ -192,7 +193,8 @@ class ReversiGame(Game):
 
         if valid_directions:
             # TODO
-
+    '''
+    
     def __init__(self):
         self.initial_board = [   [0,0,0,0,0,0,0,0],
                         [0,0,0,0,0,0,0,0],
