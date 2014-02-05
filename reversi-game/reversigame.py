@@ -125,26 +125,39 @@ class ReversiGame(Game):
 
     def make_move(self, move, state):
         "Return the state that results from making a move from a state."
+        # TODO seems to be missing out on second-order reversals. Could this be 
+        #       recursive? Define internal recursive function which builds up a 
+        #       list of all positions to be reversed, then iterate through that list?
+        #       But must look ahead not back, so only consider directions that are 180 deg
         next_state = State()
         next_state.copy_board(state.board)
         next_state.board[move[1]][move[0]] = state.to_move
         valid_directions = self.check_direction(move,state)
         if valid_directions:
             for direction in valid_directions:
-                x = move[0] + direction[0]
-                y = move[1] + direction[1]
-                ls = []
-                while x>=0 and x<=7 and y>=0 and y<=7:
-                    if state.board[y][x] == state.to_move:
-                        for (x,y) in ls:
-                            next_state.board[y][x] = state.to_move
+                # move one step ahead in valid direction
+                col = move[0] + direction[0] # x
+                row = move[1] + direction[1] # y
+                reversallist = [] # ls
+                while (col in range(8)) and (row in range(8)): #x>=0 and x<=7 and y>=0 and y<=7:
+                    # if reached a piece which is same as self, start going through reversal list
+                    if state.board[row][col] == state.to_move:
+                        # ..and set pieces to own colour
+                        for (col,row) in reversallist:
+                            # TODO but now this must be checked for higher order reversals!
+                            next_state.board[row][col] = state.to_move
                         break
-                    elif state.board[y][x] == -state.to_move:
-                        ls.append((x,y))
+                    elif state.board[row][col] == -state.to_move:
+                        # reached opposite colour, add this position to reversal list
+                        reversallist.append((col,row))
                     else: # if blank
                         break
-                    x += direction[0]
-                    y += direction[1]
+                    # update position
+                    col += direction[0]
+                    row += direction[1]
+                # end while
+            # end for
+        # end if    
         next_state.moves = []
         next_state.to_move = -state.to_move
         return next_state
