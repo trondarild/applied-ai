@@ -140,7 +140,8 @@ class ReversiGame(Game):
                 row = move[1] + direction[1] # y
                 reversallist = [] # ls
                 while (col in range(8)) and (row in range(8)): #x>=0 and x<=7 and y>=0 and y<=7:
-                    # if reached a piece which is same as self, start going through reversal list
+                    # if reached a piece which is same as self, have reached end of path so
+                    # start going through reversal list
                     if state.board[row][col] == state.to_move:
                         # ..and set pieces to own colour
                         for (col,row) in reversallist:
@@ -161,6 +162,36 @@ class ReversiGame(Game):
         next_state.moves = []
         next_state.to_move = -state.to_move
         return next_state
+
+    def make_move_new(self, move, state):
+        # recursive version
+        next_state = State()
+        next_state.copy_board(state.board)
+        next_state.board[move[1]][move[0]] = state.to_move
+        valid_directions = self.check_direction(move,state)
+        
+        # recursively reverse pieces in given direction and all other directions
+        # except where you came from
+        def reverse_pieces(self, move, state, direction, reversallist):
+            # initialize variables
+            col = move[0]
+            row = move[1]
+            
+            if(state.board[row][col] == state.to_move):
+                # have reached self, can return the reversallist
+                return reversallist
+            elif(state.board[row][col] == -state.to_move):
+                # recursive call
+                # TODO
+            else:
+                # reached empty space
+                return []
+
+
+        # end reverse_pieces
+
+        if valid_directions:
+            # TODO
 
     def __init__(self):
         self.initial_board = [   [0,0,0,0,0,0,0,0],
