@@ -1,4 +1,9 @@
 Until next meeting: Wednesday 6.2.2014 at 14:00 at E building
 1. Michael: work on legal_moves
 2. Trond: work on utility function and display function
+----
+
+Next meeting: Friday 7.2.2014 at 13:00 E building
+1. Michael: improve on utility function reversigame.py, add legal move display
+2. Trond: write alphabetasearch with timing (new file), new alphabetaplayer (main.py), ask for maximumtime (main.py)
 
