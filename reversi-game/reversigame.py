@@ -21,6 +21,16 @@ class State (object) :
                     [0,0,0,0,0,0,0,0],
                     [0,0,0,0,0,0,0,0],
                     ]
+        # define a table to store the stablity of each disk on the board
+        self.stability = [   [0,0,0,0,0,0,0,0],
+                    [0,0,0,0,0,0,0,0],
+                    [0,0,0,0,0,0,0,0],
+                    [0,0,0,0,0,0,0,0],
+                    [0,0,0,0,0,0,0,0],
+                    [0,0,0,0,0,0,0,0],
+                    [0,0,0,0,0,0,0,0],
+                    [0,0,0,0,0,0,0,0],
+                    ]
         self.moves = []
         self.to_move = 1     # the player to move
         self.utility = 0
@@ -83,6 +93,44 @@ class ReversiGame(Game):
     methods. You will also need to set the .initial attribute to the
     initial state; this can be done in the constructor."""
     
+    def set_stablity(self,state):
+        "set the stablility of each disk on the board"
+        for i in range(8):
+            for j in range(8):
+                if state.board[i][j] != 0:
+                    # set the initial stablity equals 1
+                    state.stability[i][j] = 1
+                    # iterate 4 directions
+                    for delta_x in range(-1,2):
+                        for delta_y in range(-1,2):
+                            if delta_x==0 and delta_y==0:
+                                delta_x = 2
+                                delta_y = 2
+                            else:
+                                flag = 2
+                                col = j + delta_x
+                                row = i + delta_y
+                                # check if there is a line consist of the same color disks
+                                while col>=0 and col<=7 and row>=0 and row<=7:
+                                    if state.board[row][col] != state.board[i][j]:
+                                        flag -= 1
+                                        break
+                                    col += delta_x
+                                    row += delta_y
+
+                                col = j - delta_x
+                                row = i - delta_y
+                                while col>=0 and col<=7 and row>=0 and row<=7:
+                                    if state.board[row][col] != state.board[i][j]:
+                                        flag -= 1
+                                        break
+                                    col -= delta_x
+                                    row -= delta_y
+
+                                if flag != 0: # stability increases if the disk of the same color forming a line
+                                    state.stability[i][j] +=1
+
+
     def check_direction(self, position, state):
         "Check if there are valid_directions, if so,return all valid_directions."
         valid_directions = []
@@ -209,11 +257,22 @@ class ReversiGame(Game):
                         [0,0,0,0,0,0,0,0],
                         [0,0,0,0,0,0,0,0],
                     ]
+        self.initial_stability = [   [0,0,0,0,0,0,0,0],
+                        [0,0,0,0,0,0,0,0],
+                        [0,0,0,0,0,0,0,0],
+                        [0,0,0,1,1,0,0,0],
+                        [0,0,0,1,1,0,0,0],
+                        [0,0,0,0,0,0,0,0],
+                        [0,0,0,0,0,0,0,0],
+                        [0,0,0,0,0,0,0,0],
+                    ]
         self.gamestate = State()
         self.gamestate.board = self.initial_board
+        self.gamestate.stability = self.initial_stability
+        self.gamestate.moves = [(2,4),(3,5),(4,2),(5,3)]
         self.initial = self.gamestate
 
-            
+    '''        
     def utility(self, state, player):
         "Return the value of this final state to player."
         # abstract
@@ -228,6 +287,28 @@ class ReversiGame(Game):
                 elif state.board[i][j] == -player: denominator += 1
 
         return numerator/denominator
+    '''
+    def utility(self,state,player):
+        "Return the value of this final state to player."
+        value = 0
+        self.set_stablity(state)
+        for i in range(8):
+            for j in range(8):
+                if state.board[i][j] != 0:
+                    # calculate the total value of the stablility of every disks
+                    value += state.stability[i][j]*state.board[i][j]
+        # corner is the most stable position with weight 64
+        value += 64*state.board[0][0]
+        value += 64*state.board[7][0]
+        value += 64*state.board[0][7]
+        value += 64*state.board[7][7]
+        # X-Square is adjacent to corner with weight -32
+        value -= 32*state.board[1][1]
+        value -= 32*state.board[6][1]
+        value -= 32*state.board[1][6]
+        value -= 32*state.board[6][6]
+        # change the sign of the value according the player's color
+        return value*player
 
     def terminal_test(self, state):
         "Return True if this is a final state for the game."
