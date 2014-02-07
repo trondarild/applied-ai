@@ -18,3 +18,4 @@ Report
 -- enter max search time in seconds
 -- enter move in the form (col, row) in standard format like "a1" for position (0,0)
 - where can it be found (full path to code) 
+/h/d2/m/int14zl2/applied-ai/reversi-game
