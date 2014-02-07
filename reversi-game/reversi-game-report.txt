@@ -1,0 +1,20 @@
+Report
+
+- which algorithms
+-- minimax with alphabeta pruning and time cut off (ref Russel & Norvig)
+- what kinds of extensions and heuristics (where did you find them)
+-- heuristics for utility - stability (write more on this)
+-- pyprocessing? pyglet? utils.py from Russel and Norvig
+- where in the code are interesting functions - best move calculation
+-- set_stability
+-- utility
+-- reversi_alphabeta_search
+-- used code in Russel and Norvig repository as guide
+- how is the game represented
+-- game represented as array of ints, with 0 as empty, 1 as human player, -1 as computer
+-- in graphical representation (ascii) human player is X, computer is O, legal move position is *
+- usage - how to run it
+-- python main.py
+-- enter max search time in seconds
+-- enter move in the form (col, row) in standard format like "a1" for position (0,0)
+- where can it be found (full path to code) 
