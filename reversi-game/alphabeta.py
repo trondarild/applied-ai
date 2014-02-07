@@ -60,7 +60,7 @@ def reversi_alphabeta_search(game, state, starttime=0, maxtime=5):
 	def maxvalue(game, state, starttime, maxtime, alpha, beta):
 		# check need to cut off recursion
 		if cutoff_test(game, state, starttime, maxtime) :
-			return game.utility(state, game.to_move(state))
+			return game.utility(state, state.to_move)
 
 		# not a terminal state
 		v=-infinity
@@ -76,7 +76,7 @@ def reversi_alphabeta_search(game, state, starttime=0, maxtime=5):
 	def minvalue(game, state, starttime, maxtime, alpha, beta):
 		# check if need to cut off recursion
 		if cutoff_test(game, state, starttime, maxtime):
-			return game.utility(state, game.to_move(state))
+			return game.utility(state, state.to_move)
 
 		# not a terminal state
 		v = infinity
@@ -88,16 +88,26 @@ def reversi_alphabeta_search(game, state, starttime=0, maxtime=5):
 			beta = min(beta, v)
 		return v
 
+	'''
 	# alphabeta search starts here
 	v = maxvalue(game, state, starttime, maxtime, -infinity, infinity)
-
+	print 'wanted utility: '+str(v)
 	# return the move which has the value of v
 	retmove = (-1,-1)
 	for (m, s) in game.successors(state):
-		if game.utility(s, game.to_move(state)) == v:
+		utility = game.utility(s, game.to_move(state))
+		print m
+		print utility
+		if utility == v:
+			#print m
 			retmove = m
 			break
-
+	'''
+	# get minvalue utility of all successors, then choose
+	# the one with highest value of those
+	retmove, state = argmax(game.successors(state),
+                           lambda ((a, s)): minvalue(game, s, starttime, maxtime,  -infinity, infinity))
+	
 	return retmove
 
 	
