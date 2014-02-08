@@ -267,7 +267,7 @@ class ReversiGame(object):
         return value*player
 
     def count_score(self, state):
-        score = (0,0)
+        score = [0,0]
         for i in range(8):
             for j in range(8):
                 if state.board[i][j] > 0: score[0] += 1
