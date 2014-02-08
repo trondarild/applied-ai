@@ -1,5 +1,32 @@
 Report
 
+Abstract
+
+Introduction
+- what the task is about
+
+- about reversi
+
+Algorithms
+- Utility and heuristics (Michael)
+
+- Search
+
+Overview of code
+- How the program is structured
+
+- Functions of interest
+
+- Code Sources
+
+How to run the program
+
+Conclusion
+
+References
+
+
+Outline
 - which algorithms
 -- minimax with alphabeta pruning and time cut off (ref Russel & Norvig)
 - what kinds of extensions and heuristics (where did you find them)

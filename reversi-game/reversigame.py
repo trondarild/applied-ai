@@ -1,7 +1,7 @@
 
 from copy import deepcopy
 
-from games import *
+# from games import *
 
 # 
 # Properties:
@@ -84,7 +84,7 @@ class State (object) :
     def copy_board(self,board):
         self.board = deepcopy(board)
 
-class ReversiGame(Game):
+class ReversiGame(object):
     """A game is similar to a problem, but it has a utility for each
     state and a terminal test instead of a path cost and a goal
     test. To create a game, subclass this class and implement
@@ -92,6 +92,32 @@ class ReversiGame(Game):
     override display and successors or you can inherit their default
     methods. You will also need to set the .initial attribute to the
     initial state; this can be done in the constructor."""
+
+    def __init__(self):
+        self.initial_board = [  [0,0,0,0,0,0,0,0],
+                                [0,0,0,0,0,0,0,0],
+                                [0,0,0,0,0,0,0,0],
+                                [0,0,0,-1,1,0,0,0],
+                                [0,0,0,1,-1,0,0,0],
+                                [0,0,0,0,0,0,0,0],
+                                [0,0,0,0,0,0,0,0],
+                                [0,0,0,0,0,0,0,0],
+                    ]
+        self.initial_stability = [   [0,0,0,0,0,0,0,0],
+                        [0,0,0,0,0,0,0,0],
+                        [0,0,0,0,0,0,0,0],
+                        [0,0,0,1,1,0,0,0],
+                        [0,0,0,1,1,0,0,0],
+                        [0,0,0,0,0,0,0,0],
+                        [0,0,0,0,0,0,0,0],
+                        [0,0,0,0,0,0,0,0],
+                    ]
+        self.gamestate = State()
+        self.gamestate.board = self.initial_board
+        self.gamestate.stability = self.initial_stability
+        self.gamestate.moves = [(3,2), (2,3), (4,5), (5,4)] #[(2,4),(3,5),(4,2),(5,3)]
+        self.initial = self.gamestate
+
     
     def set_stablity(self,state):
         "set the stablility of each disk on the board"
@@ -134,18 +160,20 @@ class ReversiGame(Game):
     def check_direction(self, position, state):
         "Check if there are valid_directions, if so,return all valid_directions."
         valid_directions = []
-        x = position[0]
-        y = position[1]
+        col = position[0]
+        row = position[1]
         # iterate 8 directions
-        for delta_x in range(-1,2):
-            for delta_y in range(-1,2):
-                if delta_x or delta_y:
-                    x2 = x + delta_x
-                    y2 = y + delta_y
-                    if state.board[y2][x2] == -state.to_move:
-                        valid_directions.append((delta_x,delta_y))
-                    else:
-                        None # do nothing
+        for delta_col in range(-1,2):
+            for delta_row in range(-1,2):
+                if delta_col or delta_row:
+                    col2 = col + delta_col
+                    row2 = row + delta_row
+                    # note Trond: check that is within board
+                    if col2 in range(8) and row2 in range(8):
+                        if state.board[row2][col2] == -state.to_move:
+                            valid_directions.append((delta_col,delta_row))
+                        else:
+                            None # do nothing
         return valid_directions
             
 
@@ -153,25 +181,25 @@ class ReversiGame(Game):
         "Return a list of the allowable moves at this point."
         # iterate 64 positions over board
         state.moves = []
-        for i in range(7):
-            for j in range(7):
-                if state.board[j][i] == 0:
-                    position = (i,j)
+        for i in range(8):
+            for j in range(8):
+                if state.board[i][j] == 0:
+                    position = (j,i)
                     valid_directions = self.check_direction(position, state)
                     if valid_directions:
                         for direction in valid_directions:
-                            x = i + direction[0]
-                            y = j + direction[1]
-                            while x>=0 and x<=7 and y>=0 and y<=7:
-                                if state.board[y][x] == state.to_move:
-                                    state.moves.append((i,j))
+                            col = j + direction[0]
+                            row = i + direction[1]
+                            while col in range(8) and row in range(8):
+                                if state.board[row][col] == state.to_move:
+                                    state.moves.append((j,i))
                                     break
-                                elif state.board[y][x] == -state.to_move:
+                                elif state.board[row][col] == -state.to_move:
                                     None # do nothing
                                 else: # if blank
                                     break
-                                x += direction[0]
-                                y += direction[1]
+                                col += direction[0]
+                                row += direction[1]
         return state.moves
 
 
@@ -215,79 +243,7 @@ class ReversiGame(Game):
         next_state.to_move = -state.to_move
         return next_state
 
-    '''
-    def make_move_new(self, move, state):
-        # recursive version
-        next_state = State()
-        next_state.copy_board(state.board)
-        next_state.board[move[1]][move[0]] = state.to_move
-        valid_directions = self.check_direction(move,state)
-        
-        # recursively reverse pieces in given direction and all other directions
-        # except where you came from
-        def reverse_pieces(self, move, state, direction, reversallist):
-            # initialize variables
-            col = move[0]
-            row = move[1]
-            
-            if(state.board[row][col] == state.to_move):
-                # have reached self, can return the reversallist
-                return reversallist
-            elif(state.board[row][col] == -state.to_move):
-                # recursive call
-                # TODO
-            else:
-                # reached empty space
-                return []
 
-
-        # end reverse_pieces
-
-        if valid_directions:
-            # TODO
-    '''
-    
-    def __init__(self):
-        self.initial_board = [   [0,0,0,0,0,0,0,0],
-                        [0,0,0,0,0,0,0,0],
-                        [0,0,0,0,0,0,0,0],
-                        [0,0,0,1,-1,0,0,0],
-                        [0,0,0,-1,1,0,0,0],
-                        [0,0,0,0,0,0,0,0],
-                        [0,0,0,0,0,0,0,0],
-                        [0,0,0,0,0,0,0,0],
-                    ]
-        self.initial_stability = [   [0,0,0,0,0,0,0,0],
-                        [0,0,0,0,0,0,0,0],
-                        [0,0,0,0,0,0,0,0],
-                        [0,0,0,1,1,0,0,0],
-                        [0,0,0,1,1,0,0,0],
-                        [0,0,0,0,0,0,0,0],
-                        [0,0,0,0,0,0,0,0],
-                        [0,0,0,0,0,0,0,0],
-                    ]
-        self.gamestate = State()
-        self.gamestate.board = self.initial_board
-        self.gamestate.stability = self.initial_stability
-        self.gamestate.moves = [(2,4),(3,5),(4,2),(5,3)]
-        self.initial = self.gamestate
-
-    '''        
-    def utility(self, state, player):
-        "Return the value of this final state to player."
-        # abstract
-        numerator = 0
-        denominator = 0
-        # naive utility: count number of pieces for each player
-        # and return a fraction
-        # TODO: add strategies like preferring stable positions
-        for i in range(0,8):
-            for j in range(0,8):
-                if state.board[i][j] == player: numerator += 1
-                elif state.board[i][j] == -player: denominator += 1
-
-        return numerator/denominator
-    '''
     def utility(self,state,player):
         "Return the value of this final state to player."
         value = 0
@@ -310,6 +266,14 @@ class ReversiGame(Game):
         # change the sign of the value according the player's color
         return value*player
 
+    def count_score(self, state):
+        score = (0,0)
+        for i in range(8):
+            for j in range(8):
+                if state.board[i][j] > 0: score[0] += 1
+                else: score[1] += 1
+        return score
+         
     def terminal_test(self, state):
         "Return True if this is a final state for the game."
         return not self.legal_moves(state)
