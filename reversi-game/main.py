@@ -12,6 +12,9 @@ def reversi_query_player(game, state, maxtime):
         second = inputstr[1:]
         return first in coldict.keys() and second in numbers 
 
+    def is_valid_move(move, movestate):
+        return move in movestate.moves
+
     def translate_input(inputstr):
         col = coldict[inputstr[:1]]
         row = int(inputstr[1:])-1
@@ -22,13 +25,21 @@ def reversi_query_player(game, state, maxtime):
     # translate move of type [a-h][1-8]
     # TODO: check validity
     validinput = False
+    validmove = False
     usermove = ''
-    while not validinput:
+    retmove = (-1,-1)
+    while not (validinput and validmove):
         usermove = str(raw_input('Your move (you are X)? '))
         validinput = is_valid_input(usermove)
-        if not validinput: print ('Oops, I did not understand that. Please write input in form "a1"')
 
-    return translate_input(usermove)
+        
+        if not validinput: 
+            print ('Oops, I did not understand that. Please write input in form "a1"')
+        else:
+            retmove = translate_input(usermove)
+            validmove = is_valid_move(retmove, state)
+            if not validmove: print 'That is not a valid move. Please try again (valid moves are marked with "*" on the board)'
+    return retmove 
 
 
 # define reversi_alphabeta_player
