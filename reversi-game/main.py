@@ -63,7 +63,7 @@ def reversi_play_game(game, maxtime, *players):
                 score = game.count_score(state)
                 print "Game ends, player " + str(state.to_move) + " has no more moves."
                 print "Score: player 1: " + str(score[0]) + ", player 2: " + str(score[1])
-
+                return "Game over"
 
 def main():
     game = ReversiGame();
