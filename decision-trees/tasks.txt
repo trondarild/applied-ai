@@ -1,0 +1,5 @@
+Meeting 12.02.2012 time to be decided
+1. Figure out interface
+2. Which functions and classes
+3. Division of work
+
