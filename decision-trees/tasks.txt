@@ -1,5 +1,33 @@
 Meeting 12.02.2012 time to be decided
 1. Figure out interface
 2. Which functions and classes
+function DECISION-TREE-LEARNING(examples, attributes, parent examples) returns a tree
+	if examples is empty then return PLURALITY-VALUE(parent examples)
+	else if all examples have the same classification then return the classification
+	else if attributes is empty then return PLURALITY-VALUE(examples)
+	else
+		A ← argmaxa ∈ attributes IMPORTANCE(a, examples)
+		tree ← a new decision tree with root test A
+		for each value vk of A do
+			exs ← {e : e ∈ examples and e.A = vk }
+			subtree ← DECISION-TREE-LEARNING(exs, attributes − A, examples)
+			add a branch to tree with label (A = vk ) and subtree subtree
+		return tree
+
+PLURALITY-VALUE(parent examples)
+IMPORTANCE(a, examples)
+
+READER(ARFFtextinput): returns ?
+
+ARFF format:
+@relation restaurant
+@attribute alt false, true
+@attribute bar false, true
+...
+@data
+true, false, false, true, some, $$$, false, true, french, 0-10
+
+Note: can perhaps divide dataset into 4 so can do cross validation?
+
 3. Division of work
 
