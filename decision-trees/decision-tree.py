@@ -2,14 +2,12 @@
 # Decision tree algorithm
 #
 from utils import argmax
+import plurality-value
+import importance
+import tree
 
-def plurality-value(examples):
-	# todo
-	return examples
 
-def importance(attribute, examples):
-	# todo
-	return floatvalue
+
 
 def decision-tree-learning(examples, attributes, parent_examples):
 	def is_same(examples):
@@ -24,10 +22,10 @@ def decision-tree-learning(examples, attributes, parent_examples):
 				
 		return (True, classication[0])
 
-def remove_member(member, list):
-	# todo
-	newlist=[]
-	return newlist
+	def remove_member(member, list):
+		# todo
+		newlist=[]
+		return newlist
 
 	sameclass,classification = is_same(examples)
 
