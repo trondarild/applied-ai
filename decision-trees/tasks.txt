@@ -29,5 +29,27 @@ true, false, false, true, some, $$$, false, true, french, 0-10
 
 Note: can perhaps divide dataset into 4 so can do cross validation?
 
+class Tree
+	__init__:
+		
+class Node:
+	__init__
+		self.children = []
+		self.attributes = {'alt':True, 'bar':False, 'fri':False, 'hun':True, 'pat':'some', 'price':'$$$', 'rain':False, 'res':True, 'type':'french', 'est':'0-10'}
+		self.positive=0
+		self.negative=0
+
 3. Division of work
+-----
+
+Next meeting: Friday 14.02.2014 11:00 E building
+1. Functions to write
+- read-arff - Michael
+- tree -Trond
+- visualize - Trond
+
+To be decided:
+- importance
+- plurality-value
+- prune
 
