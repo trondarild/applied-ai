@@ -7,8 +7,6 @@ import importance
 import tree
 
 
-
-
 def decision-tree-learning(examples, attributes, parent_examples):
 	def is_same(examples):
 		classification = []
@@ -22,11 +20,7 @@ def decision-tree-learning(examples, attributes, parent_examples):
 				
 		return (True, classication[0])
 
-	def remove_member(member, list):
-		# todo
-		newlist=[]
-		return newlist
-
+	
 	sameclass,classification = is_same(examples)
 
 	if len(examples)==0:
@@ -34,8 +28,8 @@ def decision-tree-learning(examples, attributes, parent_examples):
 	elif sameclass: return classification
 	elif len(attributes)==0: return plurality-value(examples)
 	else:
-		attribute = argmax(attributes, importance)
-		node = Node(argumentlist)
+		attribute = argmax(attributes, lambda ((a, e)): importance(a, e))
+		tree = Tree(attribute)
 		exs = []
 		for vk in attribute.value:
 			for example in examples:
@@ -43,10 +37,11 @@ def decision-tree-learning(examples, attributes, parent_examples):
 				if exvalues[attribute.key] == vk:
 					exs.append(example)
 
-			newattributes = remove_member(attribute, attibutes)
+			newattributes = attributes.remove(attribute)#remove_member(attribute, attibutes)
 			subtree = decision-tree-learning(exs, newattributes, examples)
 			# make a label by combining attribute name with a spacific
 			# attribute value
 			label = {attribute.key:vk} 
-			node.add_branch(label, subtree)
+			tree.add_branch(label, subtree)
 
+		return tree
