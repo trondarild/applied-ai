@@ -49,7 +49,14 @@ Next meeting: Friday 14.02.2014 11:00 E building
 - visualize - Trond
 
 To be decided:
-- importance
-- plurality-value
-- prune
+- importance - Michael
+- plurality-value - Michael
+- prune - Trond
 
+Next week: start report writing
+
+---
+next meeting: monday 17.02.2014 12:00
+- importance - Michael
+- plurality-value - Michael
+- prune - Trond
