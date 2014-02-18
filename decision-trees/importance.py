@@ -16,7 +16,7 @@ def Remainder(attribute,examples,attributes,p,n):
 					pi+=1
 				else:
 					ni+=1
-		if pi > 0 and ni > 0:
+		if pi > 0 or ni > 0:
 			sum+=float(pi+ni)/float(p+n)*I(float(pi)/float(pi+ni),float(ni)/float(pi+ni))
 	return sum
 
@@ -39,6 +39,8 @@ def importance(attribute, examples, attributes):
 			p += 1
 		else:
 			n += 1
+	#print attribute, I(float(p)/float(p+n),float(n)/float(p+n)) - Remainder(attribute,examples,attributes,p,n)
+
 	return I(float(p)/float(p+n),float(n)/float(p+n)) - Remainder(attribute,examples,attributes,p,n)
 
 if __name__ == '__main__':

@@ -62,8 +62,9 @@ def read_arff(filename):
 
 	for row in attributes[:-1]:
 		new_attributes[row[0]]=row[1]		
+	classification = attributes[-1][1]
 	
-	return new_examples,new_attributes
+	return new_examples,new_attributes, classification
 
 if __name__ == '__main__':
 	examples,attributes = read_arff('restaurant-domain.arff')

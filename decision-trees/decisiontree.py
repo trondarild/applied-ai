@@ -40,8 +40,12 @@ def decision_tree_learning(examples, attributes, parent_examples):
 	elif sameclass: return Tree(classification)
 	elif len(attributes)==0: return Tree(plurality_value(examples))
 	else:
-		
-		attributename = argmax(attributes.keys(), lambda ((a)): importance(a, examples))
+		test = [0.34343, ]
+
+		attributename = argmax(attributes.keys(), lambda ((a)): importance(a, examples, attributes))
+		if importance(attributename, examples, attributes) == 0:
+			return Tree(plurality_value(examples))
+		print "finished"
 		tree = Tree(attributename)
 		exs = []
 		for vk in attributes[attributename]:
