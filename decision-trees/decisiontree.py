@@ -42,12 +42,13 @@ def decision_tree_learning(examples, attributes, parent_examples):
 	else:
 		
 		attributename = argmax(attributes.keys(), lambda ((a)): importance(a, examples, attributes))
+		'''
 		if len(examples)==6:
 			for a in attributes.keys():
 				print a,importance(a, examples, attributes)
 			
 			print "choose: "+attributename
-		#print "finished"
+		'''
 		tree = Tree(attributename)
 		
 		for vk in attributes[attributename]:
