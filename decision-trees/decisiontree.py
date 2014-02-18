@@ -6,14 +6,7 @@ from pluralityvalue import *
 from importance import *
 from tree import *
 
-
-def decision_tree_learning(examples, attributes, parent_examples):
-	
-	#
-	# Checks if the given examples have the same classification
-	# examples: [{exampledictionary}, 'class']
-	# return: pair with (true/false, the classification)
-	def is_same(examples):
+def is_same(examples):
 		if len(examples) == 0:
 			return (False, None)
 
@@ -29,10 +22,17 @@ def decision_tree_learning(examples, attributes, parent_examples):
 				
 		return (True, classification[0])
 
-	def remove_dict_entry(key, dictionary):
+def remove_dict_entry(key, dictionary):
 		retval = dict(dictionary)
 		del retval[key]
 		return retval
+
+def decision_tree_learning(examples, attributes, parent_examples):
+	
+	#
+	# Checks if the given examples have the same classification
+	# examples: [{exampledictionary}, 'class']
+	# return: pair with (true/false, the classification)
 	
 	sameclass,classification = is_same(examples)
 
@@ -41,10 +41,17 @@ def decision_tree_learning(examples, attributes, parent_examples):
 	elif len(attributes)==0: return Tree(plurality_value(examples))
 	else:
 		
-		attributename = argmax(attributes.keys(), lambda ((a)): importance(a, examples))
+		attributename = argmax(attributes.keys(), lambda ((a)): importance(a, examples, attributes))
+		if len(examples)==6:
+			for a in attributes.keys():
+				print a,importance(a, examples, attributes)
+			
+			print "choose: "+attributename
+		#print "finished"
 		tree = Tree(attributename)
-		exs = []
+		
 		for vk in attributes[attributename]:
+			exs = []
 			for example in examples:
 				exvalues = example[0]
 				if exvalues[attributename] == vk:

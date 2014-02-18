@@ -16,8 +16,9 @@ def Remainder(attribute,examples,attributes,p,n):
 					pi+=1
 				else:
 					ni+=1
-		if pi > 0 and ni > 0:
-			sum+=float(pi+ni)/float(p+n)*I(float(pi)/float(pi+ni),float(ni)/float(pi+ni))
+		if pi == 0 and ni == 0:
+			continue
+		sum+=float(pi+ni)/float(p+n)*I(float(pi)/float(pi+ni),float(ni)/float(pi+ni))
 	return sum
 
 def I(x,y):
@@ -26,9 +27,6 @@ def I(x,y):
 	else :
 		return float(-x*math.log(x,2)-y*math.log(y,2))
 
-#def Gain(attribute,examples):
-	
-	#return I(float(p)/float(p+n),float(n)/float(p+n)) - Remainder(attribute,examples)
 
 def importance(attribute, examples, attributes):
 	# todo
@@ -39,10 +37,14 @@ def importance(attribute, examples, attributes):
 			p += 1
 		else:
 			n += 1
-
-	return I(float(p)/float(p+n),float(n)/float(p+n)) - Remainder(attribute,examples,attributes,p,n)
+	if p==0 and n==0:
+		print "Error:no examples to calculate importance"
+	#print attribute, I(float(p)/float(p+n),float(n)/float(p+n)) - Remainder(attribute,examples,attributes,p,n)
+	gain = I(float(p)/float(p+n),float(n)/float(p+n))-Remainder(attribute,examples,attributes,p,n)
+	if gain<1.0e-15: gain=0
+	return gain
 
 if __name__ == '__main__':
-	examples,attributes = readarff.read_arff('restaurant-domain.arff')
-	#print I(0,1)
+	examples,attributes,classification = readarff.read_arff('restaurant-domain.arff')
+	#print I(1.0/3,2.0/3)
 	print importance('Type',examples,attributes)
