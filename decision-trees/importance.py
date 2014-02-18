@@ -37,9 +37,10 @@ def importance(attribute, examples, attributes):
 			p += 1
 		else:
 			n += 1
+
 	return I(float(p)/float(p+n),float(n)/float(p+n)) - Remainder(attribute,examples,attributes,p,n)
 
 if __name__ == '__main__':
 	examples,attributes = readarff.read_arff('restaurant-domain.arff')
 	#print I(0,1)
-	print importance('Pat',examples,attributes)
+	print importance('Type',examples,attributes)
