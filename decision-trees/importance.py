@@ -16,9 +16,11 @@ def Remainder(attribute,examples,attributes,p,n):
 					pi+=1
 				else:
 					ni+=1
+
 		if pi == 0 and ni == 0:
 			continue
 		sum+=float(pi+ni)/float(p+n)*I(float(pi)/float(pi+ni),float(ni)/float(pi+ni))
+
 	return sum
 
 def I(x,y):
@@ -37,12 +39,14 @@ def importance(attribute, examples, attributes):
 			p += 1
 		else:
 			n += 1
+
 	if p==0 and n==0:
 		print "Error:no examples to calculate importance"
 	#print attribute, I(float(p)/float(p+n),float(n)/float(p+n)) - Remainder(attribute,examples,attributes,p,n)
 	gain = I(float(p)/float(p+n),float(n)/float(p+n))-Remainder(attribute,examples,attributes,p,n)
 	if gain<1.0e-15: gain=0
 	return gain
+
 
 if __name__ == '__main__':
 	examples,attributes,classification = readarff.read_arff('restaurant-domain.arff')

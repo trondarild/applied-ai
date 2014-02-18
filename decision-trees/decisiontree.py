@@ -49,6 +49,7 @@ def decision_tree_learning(examples, attributes, parent_examples):
 			
 			print "choose: "+attributename
 		'''
+
 		tree = Tree(attributename)
 		
 		for vk in attributes[attributename]:
