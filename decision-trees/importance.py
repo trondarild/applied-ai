@@ -5,6 +5,7 @@ import readarff
 import math
 
 def Remainder(attribute,examples,attributes,p,n):
+
 	sum = 0
 	for v in attributes[attribute]:
 		pi=0
@@ -15,7 +16,8 @@ def Remainder(attribute,examples,attributes,p,n):
 					pi+=1
 				else:
 					ni+=1
-		sum+=float(pi+ni)/float(p+n)*I(float(pi)/float(pi+ni),float(ni)/float(pi+ni))
+		if pi > 0 and ni > 0:
+			sum+=float(pi+ni)/float(p+n)*I(float(pi)/float(pi+ni),float(ni)/float(pi+ni))
 	return sum
 
 def I(x,y):
