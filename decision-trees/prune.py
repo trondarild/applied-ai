@@ -1,4 +1,11 @@
 from math import log
+from math import pow
+
+class1='YesClass'
+class2='NoClass'
+
+def calc_chisquared(a, b):
+	return pow((a-b), 2)/b
 
 # return a dict of (attribute name:information gain)
 def calculate_information_gains(examples, attributes):
@@ -15,8 +22,6 @@ def calculate_information_gains(examples, attributes):
 			return -p1*log(p1,2) -p2*log(p2,2)
 		return 0.0
 
-	class1='YesClass'
-	class2='NoClass'
 	classcount = {}
 	attrentropy = {}
 	totalclasscount = {class1:0.0, class2:0.0}
@@ -71,8 +76,78 @@ def calculate_information_gains(examples, attributes):
 		informationgain[attrname] = totalentropy-remainder
 		#print "information gain :" + str(retval[attrname])
 
-	return informationgain
+	return (informationgain, classcount)
 
+def do_chisquared_test(examples, attributes):
+	# for all attributes
+	# null hypothesis: attribute contributes nothing
+	# compare observed positive and negatives with expected
+
+	# statdata[attributename][attributevaluename][class] == number of instances
+	informationgain, statdata = calculate_information_gains(examples, attributes)
+	chisquaredtable = {1:3.84, 2:5.99, 3:7.81, 4:9.49}
+	'''
+		observed:
+					|yesclass 	| noclass 	|
+		valuename0	|	a		|	b		| sum0=a+b
+		valuename1	|	c		|	d		| sum1=c+d
+		...			------------------------------
+					 sum2=a+c	| sum3=b+d	| sum4=sum0+sum1
+
+		expected:
+					|yesclass 		| noclass 		|
+		valuename0	|sum0*sum2/sum4	|sum0*sum3/sum4	| sum0
+		valuename1	|sum1*sum2/sum4	|sum1*sum3/sum4	| sum1
+		...			-----------------------------------------
+					 sum2			| sum3			| sum4=sum0+sum1
+
+		chi squared
+					|yesclass 		| noclass 		|
+		valuename0	|(a-a')^2/a'   	| (b-b')^2/b'  	| 
+		valuename1	|(c-c')^2/c'  	| (d-d')^2/d'  	| 
+		...			-----------------------------------------
+					
+		totalchisquared = chisq00 + chisq01 + chisq10 + chisq11 ..
+		degrees of freedom: df = numvaluenames-1
+		chicheck: chisquaredtable[df] < totalchisquared ?
+
+		return {attribute:chiceck}
+
+	expectedpos[attribute] = totalpositive* (positive[attribute]+negative[attribute])
+	# check against the chi squared table
+	'''
+	retval = {}	
+	for attributename, attributevalues in statdata.iteritems():
+		sumarray = []
+		sum2 = 0
+		sum3 = 0
+		observedvals = []	# this wastes space, but makes it easier to think about
+		# calculate the sums:
+		for attributevalue, classes in attributevalues.iteritems():
+			#sumarray.append(statdata[attributename][attributevalue][class1] +
+			#	statdata[attributename][attributevalue][class2])
+			sumarray.append(classes[class1]+classes[class2])
+			observedvals.append([classes[class1], classes[class2]])
+			sum2 += classes[class1]
+			sum3 += classes[class2]
+
+		# calculate expected values, and the sum of chisquared
+		expectedvals = []
+		chisquaredsum = 0
+		sum4 = sum(sumarray)
+		for i in range(len(sumarray)):
+			expval1 = sumarray[i]*sum2/sum4
+			expval2 = sumarray[i]*sum3/sum4
+			expectedvals.append([expval1, expval2])
+			chisquaredsum += calc_chisquared(observedvals[i][0], expval1)
+			chisquaredsum += calc_chisquared(observedvals[i][1], expval2)
+		
+		# do chisquared check
+		degreesoffreedom = len(attributevalues)-1
+		chicheck = chisquaredsum >= chisquaredtable[degreesoffreedom]
+		retval[attributename] = chicheck
+	
+	return retval
 
 #
 # Prunes the tree
@@ -92,6 +167,8 @@ def prune(tree, examples, attributes):
 	
 	def irrelevance_evaluation(children):
 		# todo
+		# get statistical split point for the attribute
+		# and compare with its information gain
 		return 0
 
 	def get_branch_list(children):

@@ -60,3 +60,15 @@ next meeting: monday 17.02.2014 12:00
 - importance - Michael
 - plurality-value - Michael
 - prune - Trond
+------
+1. change to use classification from read_arff - Trond and Michael
+2. finish pruning - Trond
+3. Write evaluation code to test tree - Michael
+4. Report
+a) introduction Trond
+b) how to run Trond 
+c) implementation - general and pruning - Michael and Trond
+d) cross validation - Michael
+e) possible improvements - Trond
+f) conclusion Trond 
+5. Make outline gdocs document and share - Trond
