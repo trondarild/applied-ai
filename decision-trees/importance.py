@@ -4,7 +4,7 @@
 import readarff
 import math
 
-def Remainder(attribute,examples,attributes,p,n):
+def Remainder(attribute,examples,attributes,p,n,classes_list):
 
 	sum = 0
 	for v in attributes[attribute]:
@@ -12,7 +12,7 @@ def Remainder(attribute,examples,attributes,p,n):
 		ni=0
 		for example in examples:
 			if example[0][attribute]==v:
-				if example[1]=='Yes':
+				if example[1]==classes_list[0]:
 					pi+=1
 				else:
 					ni+=1
@@ -30,12 +30,12 @@ def I(x,y):
 		return float(-x*math.log(x,2)-y*math.log(y,2))
 
 
-def importance(attribute, examples, attributes):
+def importance(attribute, examples, attributes,classes_list):
 	# todo
 	p = 0
 	n = 0
 	for example in examples:
-		if example[1] == 'Yes':
+		if example[1] == classes_list[0]:
 			p += 1
 		else:
 			n += 1
@@ -43,7 +43,7 @@ def importance(attribute, examples, attributes):
 	if p==0 and n==0:
 		print "Error:no examples to calculate importance"
 	#print attribute, I(float(p)/float(p+n),float(n)/float(p+n)) - Remainder(attribute,examples,attributes,p,n)
-	gain = I(float(p)/float(p+n),float(n)/float(p+n))-Remainder(attribute,examples,attributes,p,n)
+	gain = I(float(p)/float(p+n),float(n)/float(p+n))-Remainder(attribute,examples,attributes,p,n,classes_list)
 	if gain<1.0e-15: gain=0
 	return gain
 

@@ -27,7 +27,7 @@ def remove_dict_entry(key, dictionary):
 		del retval[key]
 		return retval
 
-def decision_tree_learning(examples, attributes, parent_examples):
+def decision_tree_learning(examples, attributes, parent_examples, classes_list):
 	
 	#
 	# Checks if the given examples have the same classification
@@ -41,7 +41,7 @@ def decision_tree_learning(examples, attributes, parent_examples):
 	elif len(attributes)==0: return Tree(plurality_value(examples))
 	else:
 		
-		attributename = argmax(attributes.keys(), lambda ((a)): importance(a, examples, attributes))
+		attributename = argmax(attributes.keys(), lambda ((a)): importance(a, examples, attributes,classes_list))
 		'''
 		if len(examples)==6:
 			for a in attributes.keys():
@@ -60,7 +60,7 @@ def decision_tree_learning(examples, attributes, parent_examples):
 					exs.append(example)
 
 			newattributes = remove_dict_entry(attributename, attributes) #remove_member(attribute, attibutes)
-			subtree = decision_tree_learning(exs, newattributes, examples)
+			subtree = decision_tree_learning(exs, newattributes, examples,classes_list)
 			# make a label by combining attribute name with a spacific
 			# attribute value
 			label = vk #{attribute.key:vk} 
