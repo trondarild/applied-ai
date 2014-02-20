@@ -15,7 +15,11 @@ class Tree(object):
 
 	def __repr__(self):
 		# return a string with the tree
-		retstr = str(self.label) 
-		for key, value in self.children:
+		return str(self.label)
+		'''
+		retstr = 'Label: ' + str(self.label) + ' '
+		retstr += 'Children: ' 
+		for key, value in self.children.iteritems():
 			retstr+='; '+str(value)
-		return retstr
+		return retstr+". "
+		'''
