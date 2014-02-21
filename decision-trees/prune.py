@@ -3,8 +3,6 @@ from math import pow
 from collections import Counter
 from tree import Tree
 
-#class1='Yes'
-#class2='No'
 
 def calc_chisquared(a, b):
     if b>0 :
@@ -12,24 +10,9 @@ def calc_chisquared(a, b):
     return 0.0
 
 #
-# todo: split into get_stat_data(examples, attributes) and
-# calculate_information_gains()
+# collect statistics data for attributes and attribute vales
 #
-# return a dict of (attribute name:information gain)
-def calculate_information_gains(examples, attributes, classes):
-
-
-	def calc_entropy(count1, count2):
-		if count1==0 and count2==0:
-			return 0.0
-
-		p1 = count1/(count1+count2)
-		p2 = count2/(count1+count2)
-
-		#print value+": "+str(p1)+', '+str(p2)
-		if p1>0 and p2>0 :
-			return -p1*log(p1,2) -p2*log(p2,2)
-		return 0.0
+def get_stat_data(examples, attributes, classes):
 	class1 = classes[0]
 	class2 = classes[1]
 	classcount = {}
@@ -57,41 +40,7 @@ def calculate_information_gains(examples, attributes, classes):
 		totalclasscount[examplerow[1]]+=1
 		for attname, attvalue in example.items():
 			classcount[attname][attvalue][examplerow[1]] += 1
-
-	# calculate the total entropy of the goal classes
-	totalentropy = calc_entropy(totalclasscount[class1],
-		totalclasscount[class2])
-	#print totalentropy
-
-	# for each attribute name and value, calculate the entropy
-	for attrname, attvalues in attrentropy.items():
-		# print attrname
-		attrtotalclasscount = 0
-		remainder = 0
-		for value in attvalues:
-			entropy =  calc_entropy(classcount[attrname][value][class1],
-				classcount[attrname][value][class2]) #-p1*log(p1,2) -p2*log(p2,2)
-			attrentropy[attrname][value] = entropy
-
-			count = classcount[attrname][value][class1]
-			count += classcount[attrname][value][class2]
-			attrtotalclasscount+=count
-			# (sum yes+no counts for each attrvalue)*entropy
-			remainder += count*entropy
-
-		# can now calculate remainder
-		remainder *= 1.0/attrtotalclasscount
-		#print 'remainder: '+ str(remainder)
-		# calculate entropy gain: entropy - remainder
-		informationgain[attrname] = totalentropy-remainder
-		#print "information gain :" + str(retval[attrname])
-
-	return (informationgain, classcount)
-
-def get_stat_data(examples, attributes, classes):
-    infgain, statdata = calculate_information_gains(examples, attributes, classes)
-    return statdata
-
+	return classcount
 #
 # do chi squared statistical test on observed data, compare with
 # expected. Assume both lists same length
@@ -111,17 +60,10 @@ def do_chisquared_test(observedlist, expectedlist):
 	return chisq >= tableval
 
 #
-# note rewrite this to get_expected_values(examples, attributes)
-# and do_chisquared_test(expectedvalues, observedvalues)
+# calculate expected values based on statistical data
 #
-def old_do_chisquared_test(examples, attributes, classification):
-	# for all attributes
-	# null hypothesis: attribute contributes nothing
-	# compare observed positive and negatives with expected
-
-	# statdata[attributename][attributevaluename][class] == number of instances
-	statdata = get_stat_data(examples, attributes, classification)
-	chisquaredtable = {1:3.84, 2:5.99, 3:7.81, 4:9.49}
+def get_expected_values(examples, attributes, classes):
+ 	statdata = get_stat_data(examples, attributes, classes)
 	'''
 		observed:
 					|yesclass 	| noclass 	|
@@ -152,8 +94,8 @@ def old_do_chisquared_test(examples, attributes, classification):
 	expectedpos[attribute] = totalpositive* (positive[attribute]+negative[attribute])
 	# check against the chi squared table
 	'''
-	class1 = classification[0]
-	class2 = classification[1]
+	class1 = classes[0]
+	class2 = classes[1]
 	retval = {}
 	expectedvals = {}
 	for attributename, attributevalues in statdata.iteritems():
@@ -182,24 +124,11 @@ def old_do_chisquared_test(examples, attributes, classification):
 			expval1 = sumarray[i]*sum2/sum4
 			expval2 = sumarray[i]*sum3/sum4
 
-
 			#expectedvals.append([expval1, expval2])
 			expectedvals[attributename][attributevalue] = [expval1, expval2]
-
-			chisquaredsum += calc_chisquared(observedvals[i][0], expval1)
-			chisquaredsum += calc_chisquared(observedvals[i][1], expval2)
 			i+=1
-
-		# do chisquared check
-		degreesoffreedom = len(attributevalues)-1
-		chicheck = chisquaredsum >= chisquaredtable[degreesoffreedom]
-		retval[attributename] = chicheck
-
-	return retval, expectedvals
-
-def get_expected_values(examples, attributes, classes):
-    chisq, expected = old_do_chisquared_test(examples, attributes, classes)
-    return expected
+			
+	return expectedvals    
 
 #
 # checks if tree is irrelevant
@@ -224,6 +153,7 @@ def irrelevance_evaluation(tree, expectedvalues, classification):
 		c = Counter(tree.children.values())
 		# most_common returns a list with tuples, and
 		# want the leaf which is the first of the tuple
+		# and which is already a Tree object
 		leaf = c.most_common(1)[0][0]
 		return leaf
 
