@@ -1,11 +1,15 @@
 #
 # Decision tree algorithm
 #
-from utils import argmax
+from utils import argmax_random_tie, argmax
 from pluralityvalue import *
 from importance import *
 from tree import *
 
+#
+# checks if all given examples have same classification
+# return true if so, and which class it is
+#
 def is_same(examples):
 		if len(examples) == 0:
 			return (False, None)
@@ -33,23 +37,17 @@ def decision_tree_learning(examples, attributes, parent_examples, classes_list):
 	# Checks if the given examples have the same classification
 	# examples: [{exampledictionary}, 'class']
 	# return: pair with (true/false, the classification)
-	
 	sameclass,classification = is_same(examples)
 
 	if len(examples)==0: return Tree(plurality_value(parent_examples))
 	elif sameclass: return Tree(classification)
 	elif len(attributes)==0: return Tree(plurality_value(examples))
 	else:
-		
+		# create a list of the attribute names (attributes.keys()), calculate the importance of each of
+		# them, then get the one with highest value
 		attributename = argmax(attributes.keys(), lambda ((a)): importance(a, examples, attributes,classes_list))
-		'''
-		if len(examples)==6:
-			for a in attributes.keys():
-				print a,importance(a, examples, attributes)
-			
-			print "choose: "+attributename
-		'''
-
+		#attributename = argmax_random_tie(attributes.keys(), lambda ((a)): importance(a, examples, attributes,classes_list))
+		
 		tree = Tree(attributename)
 		
 		for vk in attributes[attributename]:
@@ -61,9 +59,11 @@ def decision_tree_learning(examples, attributes, parent_examples, classes_list):
 
 			newattributes = remove_dict_entry(attributename, attributes) #remove_member(attribute, attibutes)
 			subtree = decision_tree_learning(exs, newattributes, examples,classes_list)
+			#subtree = decision_tree_learning(exs, attributes, examples,classes_list)
+
 			# make a label by combining attribute name with a spacific
 			# attribute value
-			label = vk #{attribute.key:vk} 
+			label = str(vk) #{attribute.key:vk} 
 			tree.add_branch(label, subtree)
 
 		return tree
