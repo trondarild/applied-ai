@@ -1,0 +1,10 @@
+next meeting: wednesday 26.02.2014 15:15 
+- make the tyre problem file - trond
+- make the logistics problem file - michael
+
+- make a wumpus domain file - both
+
+- make generator for problems in python:
+	input variables: dimensions [int, int]
+						  number of wumpuses, pits, gold
+	randomize placement
