@@ -1,7 +1,7 @@
 from readarff import *
 from visualize import *
 from decisiontree import *
-
+from prune import *
 
 
 def isRight(tree,example):
@@ -31,6 +31,11 @@ def d_fold_cross_validation(examples,attributes,classification,d):
 				trainset.append(examples[j])
 
 		tree = decision_tree_learning(trainset,attributes,[],classification)
+		print visualize(tree)
+		expected = get_expected_values(trainset, attributes, classification)
+		tree = prune(tree, trainset, attributes, classification, expected)
+		print "after prunning "
+		print visualize(tree)
 		if isRight(tree,testset):
 			rightNumber+=1
 
