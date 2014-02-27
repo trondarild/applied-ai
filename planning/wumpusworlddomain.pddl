@@ -6,20 +6,20 @@
 	  player wumpus arrow stench pit gold - object
 
 	)
-	(:requirements :strips)
-	(:predicates (breeze ?x ?y)
-					 (agent ?x ?y)
-					 (gold ?x ?y)
+	(:requirements :adl :typing)
+	(:predicates 
+					 (ok ?x ?y)
+					 (breeze ?x ?y)
 					 (pit ?x ?y)
 					 (stench ?x ?y)
 					 (wumpus ?x ?y)
-					 (visited ?x ?y)
-					 (ok ?x ?y)
-					 (direction ?x)
+					 (heading ?who ?dir)
+					 (turnleft ?dir1 ?dir2)
 					 (limit ?x ?y)
 					 (at ?what ?x ?y)
 					 (adj ?x ?y ?i ?j)
-					 (havearrow ?who)
+					 (adjdir ?x ?y ?i ?j ?dir)
+					 (have ?who ?what)
 					 (dead ?who)
 					 ))
 
@@ -28,10 +28,10 @@
 :precondition (and (ok ?i ?j) (at ?who ?x ?y) (adj ?x ?y ?i ?j))
 :effect (and (not (at ?who ?x ?y) (at ?who ?i ?j)) 
 
-(:action takegold 
- :parameters (?who ?x - coordinate ?y - coordinate)
- :precondtion (and (at ?x ?y) (gold ?x ?y))
- :effect (not (gold ?x ?y)))
+(:action take
+ :parameters (?who - object ?what - object ?x - coordinate ?y - coordinate)
+ :precondtion (and (at ?who ?x ?y) (at ?what ?x ?y))
+ :effect (and (have ?who ?what) (not (at ?what ?x ?y))))
 
 (:action isok 
  :parameters (?x - coordinate ?y - coordinate ?i - coordinate ?j - coordinate)
@@ -40,8 +40,28 @@
 )
 
 (:action shootarrow
- :parameters (?who ?x - coordinate ?y - coordinate ?i - coordinate ?j - coordinate)
- :precondition (and (havearrow ?who) (at ?who ?x ?y) (adj ?x ?y ?i ?j))
- :effect (and (not (havearrow ?who))
+ :parameters (	?who - object
+ 					?x - coordinate 
+ 					?y - coordinate 
+ 					?i - coordinate 
+ 					?j - coordinate 
+ 					?dir - direction)
+ :precondition (and 	(have ?who ?what - arrow) 
+ 							(at ?who ?x ?y) 
+ 							(adj ?x ?y ?i ?j)
+ 							(heading ?who ?dir)
+ 							)
+ :effect (and 	(not (havearrow ?who)
+ 			 (when (exist (?w - wumpus) (and (at ?w ?i ?j) (not (dead ?w))))
+ 			  (and (dead (?w)))
+ )
 )
+
+(:action turn
+ :parameter (?who - object ?from - direction ?to - direction)
+ :precondition (heading ?who ?from)
+ :effect (heading(?who ?to)
+)
+
+
 
