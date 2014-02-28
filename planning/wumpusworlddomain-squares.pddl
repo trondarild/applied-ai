@@ -45,12 +45,17 @@
 							)
 							(stench ?square2)
 					)
+					(imply
+						(or 	(stench ?square1) 
+								(breeze ?square1)
+						)
+						(danger ?square2)
+					)
 				)
 :effect 	(and 
 				(when (pit ?square2) (not (alive ?who)))
 				(not (at ?who ?square1)) 
 				(at ?who ?square2)
-				;;(when (at WUMPUS ?square2) (not (alive ?who)))
 				(when 	
 					(exists (?w - wumpus) 
 						(and 
