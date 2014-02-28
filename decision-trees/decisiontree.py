@@ -45,8 +45,8 @@ def decision_tree_learning(examples, attributes, parent_examples, classes_list):
 	else:
 		# create a list of the attribute names (attributes.keys()), calculate the importance of each of
 		# them, then get the one with highest value
-		attributename = argmax(attributes.keys(), lambda ((a)): importance(a, examples, attributes,classes_list))
-		#attributename = argmax_random_tie(attributes.keys(), lambda ((a)): importance(a, examples, attributes,classes_list))
+		#attributename = argmax(attributes.keys(), lambda ((a)): importance(a, examples, attributes,classes_list))
+		attributename = argmax_random_tie(attributes.keys(), lambda ((a)): importance(a, examples, attributes,classes_list))
 		
 		tree = Tree(attributename)
 		
