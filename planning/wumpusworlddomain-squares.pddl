@@ -46,8 +46,10 @@
 							(stench ?square2)
 					)
 					(imply
-						(or 	(stench ?square1) 
-								(breeze ?square1)
+						(and (or (stench ?square1) 
+									(breeze ?square1)
+								)
+								(adj ?square1 ?square2)
 						)
 						(danger ?square2)
 					)
