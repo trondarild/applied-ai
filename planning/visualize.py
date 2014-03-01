@@ -1,3 +1,40 @@
+def visualize_world (size, world) :
+	'''
+	-----------------
+	| G | W | # | ~ |
+	-----------------
+	|   | # | ~ | P |
+	-----------------
+	|   |   |   | ~ |
+	-----------------
+	| A |   |   |   |
+	-----------------
+	'''
+	retval = ''
+	rowstr = ''
+	sep = '-----'
+	sep = ' ' + ''.join([sep for x in range(len(world.items()))]) + '\n'
+
+	#retval +='   | a | b | c | d | e | f | g | h |\n'
+	retval += sep
+
+	for i in range(1, size[0]+1):
+	   
+	   rowstr = '|'
+	   for j in  range(1,size[1]+1):
+	       if world[i][j] != '':
+	           rowstr += ' '+ world[i][j] +' |'
+	       else:
+	           rowstr += '    |'
+
+	   retval += rowstr + '\n'
+	   retval += sep
+
+
+	
+	return retval
+
+
 
 '''
 Visualizes the wumpus world
@@ -8,6 +45,7 @@ wumpuses - list of pair of ints [(x,y), ..] - position of wumpuses
 pits - list of pair of ints [(x,y),..] - position of pits
 '''
 def visualize (size, agentpos, golds, wumpuses, stenches, pits, breezes) :
+
 	'''
 	-----------------
 	| G | W | # | ~ |
