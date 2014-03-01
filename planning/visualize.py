@@ -20,32 +20,40 @@ def visualize (size, agentpos, golds, wumpuses, stenches, pits, breezes) :
 	-----------------
 	'''
 
+	def fill_map(lst, viz, usecounter):
+		counter = 0
+		retval = {}
+
+		for itm in lst:
+			counter +=1
+			retval[itm] = viz  + (str(counter) if usecounter else '')
+		return retval
+		
 
 	goldviz = 'G'
-	angentviz ='A'
+	angentviz ='Ag'
 	pitviz = 'P'
 	wumpusviz = 'W'
-	breezeviz = '~'
-	stenchviz = '#'
+	breezeviz = '~~'
+	stenchviz = '##'
 	# make mappings
+	counter = 0
+
 	symbolmap = {}
-	for gold in golds:
-		symbolmap[gold] = goldviz
-	for wumpus in wumpuses:
-		symbolmap[wumpus] = wumpusviz
-	for stench in stenches:
-		symbolmap[stench] = stenchviz
-	for pit in pits:
-		symbolmap[pit] = pitviz
-	for breeze in breezes:
-		symbolmap[breeze] = breezeviz
+
+	symbolmap = dict(symbolmap.items() + fill_map(golds, goldviz, True).items())
+	symbolmap = dict(symbolmap.items() + fill_map(wumpuses, wumpusviz, True).items())
+	symbolmap = dict(symbolmap.items() + fill_map(stenches, stenchviz, False).items())
+	symbolmap = dict(symbolmap.items() + fill_map(pits, pitviz, True).items())
+	symbolmap = dict(symbolmap.items() + fill_map(breezes, breezeviz, False).items())
+
 	symbolmap[agentpos] = angentviz
 	
 
 	# add 
 	retval = ''
 	rowstr = ''
-	sep = '----'
+	sep = '-----'
 	sep = ' ' + ''.join([sep for x in range(size[1])]) + '\n'
 
 	#retval +='   | a | b | c | d | e | f | g | h |\n'
@@ -58,7 +66,7 @@ def visualize (size, agentpos, golds, wumpuses, stenches, pits, breezes) :
 	       if (i,j) in symbolmap.keys():
 	           rowstr += ' '+ symbolmap[(i,j)]+' |'
 	       else:
-	           rowstr += '   |'
+	           rowstr += '    |'
 
 	   retval += rowstr + '\n'
 	   retval += sep
