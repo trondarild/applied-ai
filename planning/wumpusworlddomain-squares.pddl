@@ -24,7 +24,7 @@
 
 
 (:action move 
-:parameters (?who ?square1 ?square2)
+:parameters (?who - player ?square1 ?square2)
 :precondition (and 
 					(not (danger ?square2)) 
 					(at ?who ?square1) 
