@@ -1,12 +1,14 @@
 import sys
 from random import *
+from visualize import *
+
 M=2
 N=3
 numberOfWumpus=2
 numberOfPits=1
 numberOfGold=1
 
-def placeAround(position):
+def placeAround(position, dims):
 	row = position[0]
 	col = position[1]
 	aroundPosition=[]
@@ -14,9 +16,9 @@ def placeAround(position):
 		aroundPosition.append((row-1,col))
 	if col-1>0:
 		aroundPosition.append((row,col-1))
-	if row+1<=M:
+	if row+1<=dims[0]:
 		aroundPosition.append((row+1,col))
-	if col+1<=N:
+	if col+1<=dims[1]:
 		aroundPosition.append((row,col+1))
 	return aroundPosition
 
@@ -27,6 +29,14 @@ def generate():
 	 2: {1: ['wumpus-1', 'breeze'], 2: ['stench', 'pit-1'], 3: ['stench', 'breeze']}}
 
 	'''
+
+	goldviz = 'G'
+	angentviz ='Ag'
+	pitviz = 'P'
+	wumpusviz = 'W'
+	breezeviz = '~~'
+	stenchviz = '##'
+	filename = ''
 	if not sys.argv[1:]:
 		print "Usage: python generator.py [OPTIONS]"
 		print "Options are:"
@@ -35,6 +45,9 @@ def generate():
 		print "-W, the number of Wumpus"
 		print "-P, the number of Pits"
 		print "-G, the number of Gold"
+		print "-F, the file name"
+		return
+
 	i=1
 	while (i<len(sys.argv)) :
 		arg = sys.argv[i]
@@ -53,6 +66,9 @@ def generate():
 		elif arg=='-G':
 			i+=1
 			numberOfGold = int(sys.argv[i])
+		elif arg=='-F':
+			i+=1
+			filename = str(sys.argv[i])
 		i += 1
 
 	# generate world
@@ -70,7 +86,7 @@ def generate():
 		for j in range(1,N+1):
 			square+="sq-"+str(i)+"-"+str(j)+" "
 			row.append("sq-"+str(i)+"-"+str(j))
-			world[i][j]=[]
+			world[i][j]=''
 			coordinate.append((i,j))
 		squarelist.append(row)
 
@@ -118,7 +134,7 @@ def generate():
 
 	# place agent
 	initagent="\t(at agent-1 sq-1-1)\n"+"\t(alive agent-1)\n"+"\t(have agent-1 the-arrow)\n"+"\t(not (have agent-1 the-gold))\n\n"
-	world[1][1].append("agent-1")
+	
 	coordinate.remove((1,1))
 
 	# place wumpus
@@ -131,12 +147,12 @@ def generate():
 		row=position[0]
 		col=position[1]
 		initwumpus+="\t(at "+wumpus+" "+squarelist[row-1][col-1]+")\n"+"\t(alive "+wumpus+")\n"
-		world[row][col].append(wumpus)
+		world[row][col] = (wumpusviz + wumpus.split('-')[1] )
 		coordinate.remove(position)
-		aroundPosition=placeAround(position)
+		aroundPosition=placeAround(position, (M,N))
 		for pos in aroundPosition:
 			initwumpus+="\t(stench "+squarelist[pos[0]-1][pos[1]-1]+")\n"
-			world[pos[0]][pos[1]].append("stench")
+			world[pos[0]][pos[1]] = (stenchviz if world[pos[0]][pos[1]]=='' else world[pos[0]][pos[1]]) 
 		i+=1
 	initwumpus+="\n"
 	# place pits
@@ -149,12 +165,12 @@ def generate():
 		row=position[0]
 		col=position[1]
 		initpit+="\t(pit "+squarelist[row-1][col-1]+")\n"
-		world[row][col].append(pit)
+		world[row][col] = pitviz + pit.split('-')[1] #.append(pit)
 		coordinate.remove(position)
-		aroundPosition=placeAround(position)
+		aroundPosition=placeAround(position, (M,N))
 		for pos in aroundPosition:
 			initpit+="\t(breeze "+squarelist[pos[0]-1][pos[1]-1]+")\n"
-			world[pos[0]][pos[1]].append("breeze")
+			world[pos[0]][pos[1]] = (breezeviz if world[pos[0]][pos[1]]==''  else world[pos[0]][pos[1]])
 		i+=1
 	initpit+="\n"
 
@@ -168,11 +184,12 @@ def generate():
 		row=position[0]
 		col=position[1]
 		initgold+="\t(at "+gold+" "+squarelist[row-1][col-1]+")\n"
-		world[row][col].append(gold)
+		world[row][col] = goldviz + gold.split('-')[1] #.append(gold)
 		coordinate.remove(position)
 		i+=1
 	initgold+="\n"
 
+	world[1][1] = (angentviz) #("agent-1")
 
 	s+="  (:init \n" + initsquare + initagent + initpit + initgold + initwumpus + "  )\n"
 	#Goal
@@ -181,9 +198,16 @@ def generate():
 		havegold+="\t\t(have agent-1 "+gold+")\n"
 	goal=havegold+"\t\t(at agent-1 sq-1-1)\n"+"\t\t(alive agent-1)\n"
 	s+="  (:goal (and\n"+goal+"\t )\n  )\n"
-	print s+")"
-	return world
+	s+=")"
+
+	# write to file
+	fileobj = open(filename, 'w')
+	fileobj.write(s)
+	fileobj.close()
+	print 'Problem file generated and written to ' + filename	
+	return world, (M,N)
 	#print coordinate
 if __name__ == "__main__":
-	world = generate()
+	world, size = generate()
+	print visualize_world(size, world)
 	#print world
