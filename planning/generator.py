@@ -21,6 +21,12 @@ def placeAround(position):
 	return aroundPosition
 
 def generate():
+	'''return a world dictionary(coordinate as key, a list of string of the object as value), which is like below
+	
+	{1: {1: ['agent-1', 'stench'], 2: ['stench', 'breeze', 'gold-1'], 3: ['wumpus-2']}, 
+	 2: {1: ['wumpus-1', 'breeze'], 2: ['stench', 'pit-1'], 3: ['stench', 'breeze']}}
+
+	'''
 	if not sys.argv[1:]:
 		print "Usage: python generator.py [OPTIONS]"
 		print "Options are:"
@@ -180,3 +186,4 @@ def generate():
 	#print coordinate
 if __name__ == "__main__":
 	world = generate()
+	#print world
