@@ -19,7 +19,7 @@
 					 (pit ?square)
 					 (breeze ?square)
 					 (stench ?square)
-					 (wumpus ?square)
+					 ;;(wumpus ?square)
 					 )
 
 
@@ -33,9 +33,6 @@
 					(imply	(and (pit ?square1) (adj ?square1 ?square2))
 								(breeze ?square2)
 					)
-					;;(imply	(and (wumpus ?square1) (adj ?square1 ?square2))
-					;;			(stench ?square2)
-					;;)
 					(imply 
 							(and (exists (?w - wumpus)
 									(and 	(at ?w ?square1) 
@@ -49,9 +46,13 @@
 						(and (or (stench ?square1) 
 									(breeze ?square1)
 								)
-								(adj ?square1 ?square2)
+								;;(adj ?square1 ?square2)
+						) 
+						(exists (?sq - square)
+							(and (adj ?square1 ?sq)
+								(danger ?sq)
+							)
 						)
-						(danger ?square2)
 					)
 				)
 :effect 	(and 
@@ -86,16 +87,16 @@
 
 
 (:action shoot 
-:parameters (?who - player ?withwhat - arrow ?where - square ?victim - wumpus)
+:parameters (?who - player ?withwhat - arrow ?victim - wumpus)
 :precondition 	(and
 						(have ?who ?withwhat)
-						(at ?who ?where)
 						(alive ?who)
 						(alive ?victim)
-						(exists 	(?sq - square)
+						(exists 	(?sq1 - square ?sq2 - square)
 									(and 
-										(adj ?where ?sq)
-										(at ?victim ?sq)
+										(at ?who ?sq1)
+										(adj ?sq1 ?sq2)
+										(at ?victim ?sq2)
 									)
 						)
 					)
