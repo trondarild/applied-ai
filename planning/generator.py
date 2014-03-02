@@ -90,24 +90,24 @@ def generate():
 			coordinate.append((i,j))
 		squarelist.append(row)
 
-	square+="- square "
+	square+="- square \n"
 
 	wumpus=""
 	wumpuslist=[]
 	for i in range(1,numberOfWumpus+1):
 		wumpuslist.append("wumpus-"+str(i))
 		wumpus+="wumpus-"+str(i)+" "
-	wumpus+="- wumpus "
+	wumpus+="- wumpus \n"
 
 	pit=""
 	pitlist=[]
 	for i in range(1,numberOfPits+1):
 		pitlist.append("pit-"+str(i))
 		pit+="pit-"+str(i)+" "
-	pit+="- pit "
+	pit+="- pit \n"
 
-	arrow="the-arrow - arrow "
-	agent="agent-1 - player "
+	arrow="the-arrow - arrow \n"
+	agent="agent-1 - player \n"
 	#gold="the-gold - gold "
 	gold=""
 	goldlist=[]
@@ -116,7 +116,7 @@ def generate():
 		gold+="gold-"+str(i)+" "
 	gold+="- gold "
 
-	s+="  (:objects " + square + wumpus + pit + arrow + agent + gold +")\n"
+	s+="  (:objects \n" + square + wumpus + pit + arrow + agent + gold +")\n"
 
 	#Init
 	initsquare=""
