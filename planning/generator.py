@@ -2,11 +2,6 @@ import sys
 from random import *
 from visualize import *
 
-M=2
-N=3
-numberOfWumpus=2
-numberOfPits=1
-numberOfGold=1
 
 def placeAround(position, dims):
 	row = position[0]
@@ -30,6 +25,11 @@ def generate():
 
 	'''
 
+	M=2
+	N=3
+	numberOfWumpus=2
+	numberOfPits=1
+	numberOfGold=1
 	goldviz = 'G'
 	angentviz ='Ag'
 	pitviz = 'P'

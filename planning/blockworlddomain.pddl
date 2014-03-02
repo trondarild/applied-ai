@@ -1,6 +1,6 @@
 ; The 1-operator blocks world domain from the UCPOP distribution.
 
-(define (domain blocks-world-domain)
+(define (domain blocksworld)
   (:requirements :equality :conditional-effects)
   (:constants table)
   (:predicates (on ?x ?y) (clear ?x) (block ?x))
