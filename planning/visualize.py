@@ -113,6 +113,7 @@ def visualize (size, agentpos, golds, wumpuses, stenches, pits, breezes) :
 	
 	return retval
 
+'''
 size = (5,5)
 agentpos = (0,0)
 golds = [(2,2)]
@@ -122,3 +123,4 @@ pits = [(0,1)]
 breezes = [(0,2)]
 
 print visualize(size, agentpos, golds, wumpuses, stenches, pits, breezes)
+'''
