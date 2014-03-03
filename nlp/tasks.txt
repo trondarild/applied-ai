@@ -1,0 +1,16 @@
+* extract bigram statistics from corpus - function tag1_tag2_prob(tag1, tag2)) return conditional probability of tag2 given tag1 - Michael
+* function word_tag_prob(tag, word): return probability of word given tag - Michael
+* function read_corpus(filename): return dictionary of word-partofspeech pairs mapped to frequency- Michael
+* function to read dictionary - Michael
+
+* dictionary format: {(word,tag):freq, ...}
+
+* function baseline_tagger(sentence, wordtag_frequency_dictionary) return list of tags for words, using only frequency of words from corpus (dictionary - Trond
+
+* function build_tag_prob_table(sentence)
+
+* function exhaustive_search_tagger(sentence, tag_prob_table): list of tags
+
+* function viterby_search(sentence): returns tags of sentence
+* function noisy_channel_model()?
+* function hmm_tagger(sentence): list of tags
