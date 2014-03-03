@@ -1,6 +1,7 @@
 * extract bigram statistics from corpus - function tag1_tag2_prob(tag1, tag2)) return conditional probability of tag2 given tag1 - Michael
 * function word_tag_prob(tag, word): return probability of word given tag - Michael
 * function read_corpus(filename): return dictionary of word-partofspeech pairs mapped to frequency- Michael
+* function to read dictionary - Michael
 
 * dictionary format: {(word,tag):freq, ...}
 
