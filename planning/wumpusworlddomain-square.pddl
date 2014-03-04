@@ -100,9 +100,13 @@
 									)
 						)
 					)
-:effect	(not (alive ?victim))
-			
+:effect	(and 	(not (alive ?victim))
+				(not (have ?who ?withwhat))
+		)
+		
 )
+			
+
 
 ) ;; end define
 
