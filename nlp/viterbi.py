@@ -24,14 +24,14 @@ def viterbi(sentence):
 				m=[0,'']
 				for y0 in tags:
 					if table[t-1][y0]>0 and dicOfTags.has_key((y0,y)):
-						value=table[t-1][y0]*tag1_tag2_prob(y0,y,dicOfTag, dicOfTags)#dicOfTags[(y0,y)]
+						value=table[t-1][y0]*tag1_tag2_prob(y0,y,dicOfTag, dicOfTags)
 						if value>m[0]:
 							m[0]=value
 							m[1]=y0
 					else:
 						None
 				if m[0]>0:
-					table[t][y]=m[0]*word_tag_prob(y,words[t], dicOfWordTag, dicOfTag)#dicOfWordTag[(words[t],y)]
+					table[t][y]=m[0]*word_tag_prob(y,words[t], dicOfWordTag, dicOfTag)
 					newpath[y]=path[m[1]]+[y]
 				else:
 					table[t][y]=0
@@ -40,10 +40,9 @@ def viterbi(sentence):
 				table[t][y]=0
 
 		path = newpath
-
+	# final
 	m=[0,'']
 	for y in tags:
-		#print table[t][y]
 		if table[t][y]>m[0]:
 			m[0]=table[t][y]
 			m[1]=y

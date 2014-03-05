@@ -12,7 +12,7 @@ def tag1_tag2_prob(tag1, tag2,dicOfTag, dicOfTags):
 		numerator=0
 	return float(numerator)/denominator
 
-def word_tag_prob(tag, word,dicOfWordTag, dicOfTag):
+def word_tag_prob(tag, word, dicOfWordTag, dicOfTag):
 	if dicOfWordTag.has_key((word,tag)):
 		numerator=dicOfWordTag[(word,tag)]
 	else:
@@ -30,12 +30,13 @@ def read_corpus(fileName):
 	dicOfTag=dict()
 	dicOfTags=dict()
 	f=open(fileName,"r")
-	prevTag=''
+	prevTag='BOS'
+	dicOfTag['BOS']=1
 	for line in f:
 		line=line.strip()
 		if line=='':
-			prevTag=''
-			None
+			prevTag='BOS'
+			dicOfTag['BOS']+=1
 		else:
 			line=line.split('\t')
 			word=line[1].strip()
@@ -60,6 +61,7 @@ def read_corpus(fileName):
 	return dicOfWordTag,dicOfTag,dicOfTags
 
 if __name__ == '__main__':
-	dicOfWordTag,dicOfTag,dicOfTags=read_corpus("CoNLL2009-ST-English-train-pos.txt")
-	print tag1_tag2_prob('JJ', 'NN', dicOfTag, dicOfTags)
-	print word_tag_prob('JJ', 'round', dicOfWordTag, dicOfTag)
+	dicOfWordTag,dicOfTag,dicOfTags=read_corpus("corpus/CoNLL2009-ST-English-train-pos.txt")
+	t=tag1_tag2_prob('BOS', 'DT', dicOfTag, dicOfTags)
+	w=word_tag_prob('DT', 'That', dicOfWordTag, dicOfTag)
+	print t*w
