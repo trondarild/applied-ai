@@ -1,7 +1,7 @@
 from read_corpus import *
 
-def viterbi(sentence):
-	dicOfWordTag,dicOfTag,dicOfTags=read_corpus("corpus/CoNLL2009-ST-English-train-pos.txt")
+def viterbi(sentence,dicOfWordTag,dicOfTag,dicOfTags):
+	
 	tags=dicOfTag.keys()
 	words=sentence.split()
 	table=[{}]
@@ -51,5 +51,6 @@ def viterbi(sentence):
 	return (prob,path[state])
 
 if __name__=='__main__':
-	t=viterbi("That round table might collapse")
-	print t[0],t[1]
+	dicOfWordTag,dicOfTag,dicOfTags=read_corpus("corpus/CoNLL2009-ST-English-train-pos.txt")
+	prob,path=viterbi("The most troublesome report may be the August merchandise trade deficit due out tomorrow .",dicOfWordTag,dicOfTag,dicOfTags)
+	print prob,path
