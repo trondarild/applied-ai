@@ -60,6 +60,9 @@ for pair in trellislist:
 #print sentencetaglist
 
 paths = exhaustive_search(sentencetaglist)
+#print paths
+
+paths = sorted(paths, key = lambda pair: -pair[1] )
 print len(paths)
 for path in paths: 
 	print path
