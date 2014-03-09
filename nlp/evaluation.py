@@ -39,7 +39,6 @@ def evaluate(testFile,n):
 			line=line.split()
 			words.append(line[1])
 			right.append(line[4])
-			#print 'deal with '+line[1]+'\t'+str(totalNumber)
 			totalNumber+=1
 			
 
@@ -47,5 +46,5 @@ def evaluate(testFile,n):
 	recall=1-float(denominator)/totalNumber
 	return precision,recall
 if __name__ == '__main__':
-	precision,recall=evaluate('corpus/CoNLL2009-ST-English-development-pos.txt',16)
+	precision,recall=evaluate('corpus/CoNLL2009-ST-English-development-pos.txt',15)
 	print precision,recall
