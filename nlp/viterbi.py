@@ -1,9 +1,10 @@
 from read_corpus import *
 
-def viterbi(sentence,dicOfWordTag,dicOfTag,dicOfTags):
+def viterbi(words,dicOfWordTag,dicOfTag,dicOfTags):
 	
 	tags=dicOfTag.keys()
-	words=sentence.split()
+	#words=sentence.split()
+	#print words
 	table=[{}]
 	path={}
 	# init
@@ -43,14 +44,16 @@ def viterbi(sentence,dicOfWordTag,dicOfTag,dicOfTags):
 	# final
 	m=[0,'']
 	for y in tags:
-		if table[t][y]>m[0]:
-			m[0]=table[t][y]
+		if table[len(words)-1][y]>m[0]:
+			m[0]=table[len(words)-1][y]
 			m[1]=y
 	prob=m[0]
 	state=m[1]
+	if prob==0:
+		return (0,[])
 	return (prob,path[state])
 
 if __name__=='__main__':
 	dicOfWordTag,dicOfTag,dicOfTags=read_corpus("corpus/CoNLL2009-ST-English-train-pos.txt")
-	prob,path=viterbi("The most troublesome report may be the August merchandise trade deficit due out tomorrow .",dicOfWordTag,dicOfTag,dicOfTags)
+	prob,path=viterbi(['Housing', 'starts', 'are', 'expected', 'to', 'quicken', 'a', 'bit', 'from', 'August', '\'s', 'annual', 'pace', 'of', '1,350,000', 'units', '.'],dicOfWordTag,dicOfTag,dicOfTags)
 	print prob,path

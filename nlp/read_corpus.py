@@ -38,7 +38,7 @@ def read_corpus(fileName):
 			prevTag='BOS'
 			dicOfTag['BOS']+=1
 		else:
-			line=line.split('\t')
+			line=line.split()
 			word=line[1].strip()
 			tag=line[4].strip()
 			wordtag=(word,tag)
